@@ -4,9 +4,9 @@
             <div class="col-sm-6">
                 <h1>Productos</h1>
                 <div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Agregar Productos
-                      </button>
+                    <!-- producto-index.component.html -->
+                 <!--    <button class="btn btn-primary" mat-raised-button (click)="openCreateProductModal()">Crear Producto</button> -->
+                    <a class="btn btn-primary" href="productos/create" >Crear Producto</a>
                 </div>
             </div>
         </div>
@@ -18,21 +18,38 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+
                 
-                <div class="card">
-                    
-                    <div class="card-body">
-                        <table id="miTabla" class="table responsive-"></table>
+                         <!-- home.component.html -->
+                    <table mat-table [dataSource]="tusDatos" class="mat-elevation-z8">
+
+                        <!-- Definición de columnas -->
+                        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                            <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ column === 'categoria' ? element.categoria.nombre : element[column] }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Fila de encabezado -->
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                        <!-- Fila de datos -->
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <!-- Paginador -->
+                    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
+
                     </div>
 
-                </div>
-
-            </div>
+              
 
         </div>
     </div>
 </section>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
     </div>
-  </div>
+</div>
