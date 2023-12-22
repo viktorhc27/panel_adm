@@ -10,7 +10,7 @@ export class VentasService {
   constructor(
     private http: HttpClient
   ) { }
-   
+
   index(): Observable<any> {
     return this.http.get(this.apiUrl + this.controller + 'index');
   }
@@ -19,5 +19,9 @@ export class VentasService {
   }
   list_count(): Observable<any> {
     return this.http.get(this.apiUrl + this.controller + 'total_ventas');
+  }
+
+  reporte_meses(fecha_inicio: any, fecha_final: any): Observable<any> {
+    return this.http.post(this.apiUrl + this.controller + 'reporte_meses', { fecha_inicio, fecha_final })
   }
 }

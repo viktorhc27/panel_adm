@@ -1,55 +1,9 @@
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Productos</h1>
-                <div>
-                    <!-- producto-index.component.html -->
-                 <!--    <button class="btn btn-primary" mat-raised-button (click)="openCreateProductModal()">Crear Producto</button> -->
-                    <a class="btn btn-primary" href="productos/create" >Crear Producto</a>
-                </div>
-            </div>
-        </div>
+<kuv-loading></kuv-loading>
+<kuv-alert></kuv-alert>
+<div class="p-2 p-md-5">
+    <h3>Gestión de Productos</h3>
 
-    </div>
-</section>
+    <div class="btn btn-primary" (click)="agregar()" >Agregar Nuevo Producto</div>
 
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-
-                
-                         <!-- home.component.html -->
-                    <table mat-table [dataSource]="tusDatos" class="mat-elevation-z8">
-
-                        <!-- Definición de columnas -->
-                        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
-                            <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ column === 'categoria' ? element.categoria.nombre : element[column] }}
-                            </td>
-                        </ng-container>
-
-                        <!-- Fila de encabezado -->
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-                        <!-- Fila de datos -->
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-
-                    <!-- Paginador -->
-                    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
-
-                    </div>
-
-              
-
-        </div>
-    </div>
-</section>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-    </div>
+    <kuv-lazy-table [url]="'http://localhost:3000/api/' + 'productos/index'" [columnas]="columnas" [acciones]="acciones" [filtros]="filtros" [reloadEmitter]="reloadEmitter"  ></kuv-lazy-table>
 </div>

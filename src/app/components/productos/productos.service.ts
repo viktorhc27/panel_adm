@@ -25,8 +25,13 @@ export class ProductosService {
   excel(): Observable<any> {
     return this.http.get(this.apiUrl + this.controller + 'excel', { responseType: 'blob' })
   }
-
-  uploadFile(idUser: any, file: File): Observable<any> {
-    return this.http.post(this.apiUrl + this.controller + 'upload', { idUser, file });
+  view(id: number): Observable<any> {
+    return this.http.get(this.apiUrl + this.controller + 'view/' + id,)
+  }
+  update(producto: any): Observable<any> {
+    return this.http.post(this.apiUrl + this.controller + 'update/', {producto:producto})
+  }
+  uploadFile(form: FormData): Observable<any> {
+    return this.http.post(this.apiUrl + this.controller + 'upload', form);
   }
 }

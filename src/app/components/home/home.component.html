@@ -148,35 +148,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Lista de Productos</h3>
-
-                    </div>
-                    <!-- home.component.html -->
-                    <table mat-table [dataSource]="tusDatos" class="mat-elevation-z8">
-
-                        <!-- Definición de columnas -->
-                        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
-                            <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-                            <td mat-cell *matCellDef="let element">
-                                {{ column === 'categoria' ? element.categoria.nombre : element[column] }}
-                            </td>
-                        </ng-container>
-
-                        <!-- Fila de encabezado -->
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-                        <!-- Fila de datos -->
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-
-                    <!-- Paginador -->
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
-
-
-                </div>
+            <div class="col-12">
+                <app-ventas-meses></app-ventas-meses>
             </div>
         </div>
     </div>

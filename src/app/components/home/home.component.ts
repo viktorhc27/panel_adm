@@ -9,15 +9,16 @@ import { NgxEchartsDirective, provideEcharts } from 'ngx-echarts';
 import { EChartsOption } from 'echarts';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
+import { VentasMesesComponent } from "../reportes/ventas-meses/ventas-meses.component";
 
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, HttpClientModule, MatPaginatorModule, MatTableModule, NgxEchartsDirective],
-  providers: [ProductosService, VentasService, provideEcharts()],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+    selector: 'app-home',
+    standalone: true,
+    providers: [ProductosService, VentasService, provideEcharts()],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss',
+    imports: [CommonModule, HttpClientModule, MatPaginatorModule, MatTableModule, NgxEchartsDirective, VentasMesesComponent]
 })
 export class HomeComponent implements OnInit {
 

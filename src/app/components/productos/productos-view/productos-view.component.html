@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Agregar Producto</h4>
+    <h4 class="modal-title">Detalle Producto</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     </button>
 </div>
@@ -22,12 +22,12 @@
                     Debe ingresar un valor en el campo.
                 </div>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <button type="button" class="btn btn-success" mat-raised-button (click)="fileInput.click()">Choose
                     File</button>
                 <input (change)="onFileSelected($event)" #fileInput type="file">
                 <span class="file-name">{{selectedFile?.name}}</span>
-            </div>
+            </div> -->
             <div class="col-12 p-3">
                 <label for="categoria">Categoria</label>
                 <select class="form-select" formControlName="categoria_id" aria-label="Default select example" 
@@ -44,6 +44,6 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-success" (click)="guardar()">Guardar</button>
+
     <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancelar</button>
 </div>

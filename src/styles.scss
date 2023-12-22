@@ -1,5 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
 
+.modal {
+  z-index: 1057!important; /* o cualquier otro número mayor que el z-index del cuadro negro */
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+ngb-modal-backdrop{
+  z-index: 1055!important;
+}
+
+.grid[_ngcontent-ng-c3283961843] .cell.header[_ngcontent-ng-c3283961843] {
+  background-color: #343a40!important;
+  border-color: var(--kt-head-b, #dee2e6)!important;
+  color: white!important;
+}
+
+#filtros[_ngcontent-ng-c3283961843] .btns[_ngcontent-ng-c3283961843] .btn[_ngcontent-ng-c3283961843] {
+  border-radius: 10px!important;
+  background-color: #343a40!important;
+  border-color: #000000!important;
+}
