@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Select2Module } from 'ng-select2-component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxKuvUtilsModule } from 'ngx-kuv-utils';
+import { SweetAlertComponent } from '../../../utils/sweet-alert/sweet-alert.component';
 
 @Component({
   selector: 'app-productos-update',
@@ -21,7 +22,7 @@ import { NgxKuvUtilsModule } from 'ngx-kuv-utils';
     NgxKuvToolsModule,
     NgxKuvUtilsModule
   ],
-  providers: [CategoriasService, ProductosService],
+  providers: [CategoriasService, ProductosService,SweetAlertComponent],
   templateUrl: './productos-update.component.html',
   styleUrl: './productos-update.component.scss'
 })
@@ -38,7 +39,7 @@ export class ProductosUpdateComponent implements OnInit {
     private router: Router,
     public activeModal: NgbActiveModal,
     private loading: LoadingService,
-    private alerts: AlertService
+    private alert: SweetAlertComponent
   ) {
 
   }
@@ -58,15 +59,19 @@ export class ProductosUpdateComponent implements OnInit {
     this.service.index().subscribe({
       next: (res) => {
         this.categorias = res
+        this.alert.ToastAlert('success', 'top-end', 'categorias cargadas', 1500);
       }, error: (err) => {
         console.error(err);
         this.loading.hide();
-        this.alerts.addAlert("No se pudo Cargar categorias", "danger");
+        this.alert.ToastAlert('error', 'top-end', 'No se pudo Cargar categorias', 1500);
+       
         if (err.error.msg) {
-          this.alerts.addAlert(err.error.msg, "danger");
+          this.alert.ToastAlert('error', 'top-end', err.error.msg, 1500);
+         
         }
         if (err.error.errors[0]) {
-          this.alerts.addAlert(err.error.errors[0].msg, "danger");
+          this.alert.ToastAlert('error', 'top-end', err.error.errors[0].msg, 1500);
+        
         }
       }
     })
@@ -79,23 +84,27 @@ export class ProductosUpdateComponent implements OnInit {
         next: (res) => {
           this.loading.hide();
           this.activeModal.close(res.model);
-          this.alerts.addAlert(res.response, "success");
+          this.alert.ToastAlert('success', 'top-end', res.response, 1500);
+        
+          this.alert.ToastAlert('success', 'top-end', 'Producto Modificado con éxito.', 1500);
         },
         error: (err) => {
           console.error(err);
           this.loading.hide();
-          this.alerts.addAlert("No se pudo guardar el registro del producto.", "danger");
+          this.alert.ToastAlert('error', 'top-end', 'No se pudo guardar el registro del producto.', 1500);
+       
           if (err.error.msg) {
-            this.alerts.addAlert(err.error.msg, "danger");
+            this.alert.ToastAlert('error', 'top-end', err.error.msg, 1500);
           }
           if (err.error.errors[0]) {
-            this.alerts.addAlert(err.error.errors[0].msg, "danger");
+            this.alert.ToastAlert('error', 'top-end', err.error.errors[0].msg, 1500);
           }
         }
       });
     } else {
       this.formGroup.markAllAsTouched();
-      this.alerts.addAlert("Hay errores en el formulario.", "warning");
+      this.alert.ToastAlert('warning', 'top-end', "Hay errores en el formulario.", 1500);
+      
     }
 
   }

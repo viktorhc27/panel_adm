@@ -5,40 +5,47 @@
 </div>
 <div class="modal-body">
     <form [formGroup]="formGroup">
-        <div class="row align-items-center">
-            <div class="col-6 p-3">
-                <label for="nombre">Nombre</label>
-                <input type="text" class="form-control" id="nombre" formControlName="nombre"
-                    [ngClass]="{'is-invalid': formGroup.controls['nombre'].errors && formGroup.controls['nombre'].touched}">
-                <div class="invalid-feedback">
-                    Debe ingresar un valor en el campo.
-                </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                <img width="300" [src]="apiUrl + formGroup.get('img')?.value" />
+
             </div>
-            <div class="col-6 p-3">
-                <label for="precio">Precio</label>
-                <input type="text" class="form-control" id="precio" formControlName="precio"
-                    [ngClass]="{'is-invalid': formGroup.controls['precio'].errors && formGroup.controls['precio'].touched}">
-                <div class="invalid-feedback">
-                    Debe ingresar un valor en el campo.
+            <div class="col-6">
+                <div class="col-12 p-3">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" formControlName="nombre"
+                        [ngClass]="{'is-invalid': formGroup.controls['nombre'].errors && formGroup.controls['nombre'].touched}">
+                    <div class="invalid-feedback">
+                        Debe ingresar un valor en el campo.
+                    </div>
                 </div>
-            </div>
-            <!-- <div class="form-group">
+                <div class="col-12 p-3">
+                    <label for="precio">Precio</label>
+                    <input type="text" class="form-control" id="precio" formControlName="precio"
+                        [ngClass]="{'is-invalid': formGroup.controls['precio'].errors && formGroup.controls['precio'].touched}">
+                    <div class="invalid-feedback">
+                        Debe ingresar un valor en el campo.
+                    </div>
+                </div>
+                <!-- <div class="form-group">
                 <button type="button" class="btn btn-success" mat-raised-button (click)="fileInput.click()">Choose
                     File</button>
                 <input (change)="onFileSelected($event)" #fileInput type="file">
                 <span class="file-name">{{selectedFile?.name}}</span>
             </div> -->
-            <div class="col-12 p-3">
-                <label for="categoria">Categoria</label>
-                <select class="form-select" formControlName="categoria_id" aria-label="Default select example" 
-                [ngClass]="{'is-invalid': formGroup.controls['categoria_id'].errors && formGroup.controls['categoria_id'].touched}">
-                    <option *ngFor="let categorias of categorias" [value]="categorias.id">{{ categorias.nombre }}
-                    </option>
-                </select>
-                <div class="invalid-feedback">
-                    Debe ingresar un valor en el campo.
+                <div class="col-12 p-3">
+                    <label for="categoria">Categoria</label>
+                    <select class="form-select" formControlName="categoria_id" aria-label="Default select example"
+                        [ngClass]="{'is-invalid': formGroup.controls['categoria_id'].errors && formGroup.controls['categoria_id'].touched}">
+                        <option *ngFor="let categorias of categorias" [value]="categorias.id">{{ categorias.nombre }}
+                        </option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Debe ingresar un valor en el campo.
+                    </div>
                 </div>
             </div>
+
         </div>
 
     </form>

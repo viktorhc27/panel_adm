@@ -19,6 +19,9 @@ export class ProductosService {
   save(producto: any): Observable<any> {
     return this.http.post(this.apiUrl + this.controller + 'save', { producto });
   }
+  delete(id: any): Observable<any> {
+    return this.http.delete(this.apiUrl + this.controller + "delete/" + id);
+  }
   list_count(): Observable<any> {
     return this.http.get(this.apiUrl + this.controller + 'total');
   }
@@ -33,5 +36,11 @@ export class ProductosService {
   }
   uploadFile(form: FormData): Observable<any> {
     return this.http.post(this.apiUrl + this.controller + 'upload', form);
+  }
+  activate(data: any): Observable<any> {
+    return this.http.get(this.apiUrl + this.controller + 'activate/' + data.id);
+  }
+  deactivate(data: any): Observable<any> {
+    return this.http.get(this.apiUrl + this.controller + 'deactivate/' + data.id);
   }
 }

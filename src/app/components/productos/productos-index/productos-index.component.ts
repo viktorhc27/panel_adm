@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { ModalService } from '../../../service/modal.service';
 import { ProductosService } from '../productos.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { AlertService, LoadingService, NgxKuvToolsModule } from 'ngx-kuv-tools';
+import { LoadingService, NgxKuvToolsModule } from 'ngx-kuv-tools';
 import { NgxKuvUtilsModule } from 'ngx-kuv-utils';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductosCreateComponent } from '../productos-create/productos-create.component';
@@ -11,6 +10,8 @@ import { NgSelect2Module } from 'ng-select2';
 import { ProductosViewComponent } from '../productos-view/productos-view.component';
 import { ProductosUpdateComponent } from '../productos-update/productos-update.component';
 import { environment } from '../../../../environments/environments';
+import { SweetAlertComponent } from '../../../utils/sweet-alert/sweet-alert.component';
+import { ModalDeleteComponent } from '../../../utils/modal-delete/modal-delete.component';
 
 @Component({
   selector: 'app-productos-index',
@@ -18,14 +19,11 @@ import { environment } from '../../../../environments/environments';
   imports: [CommonModule, HttpClientModule, NgxKuvToolsModule, NgxKuvUtilsModule, NgSelect2Module],
   templateUrl: './productos-index.component.html',
   styleUrl: './productos-index.component.scss',
-  providers: [ProductosService]
+  providers: [ProductosService, SweetAlertComponent]
 })
 export class ProductosIndexComponent implements OnInit {
   apiUrl = environment.apiUrl;
-  dialogRef: any
-
   columnas: any[] = [
-
     {
       label: "Nombre",
       attribute: 'nombre',
@@ -44,10 +42,9 @@ export class ProductosIndexComponent implements OnInit {
       label: "Imagen",
       styled: true,
       width: 1,
-      responsive: [ 'SM', 'MD'],
+      responsive: ['SM', 'MD'],
       value: (el: any) => {
-        return '<img width=100px src=http://localhost:3000/'+el.img+'/>';
-        return "<img [src]=http://localhost:3000/"+el.img+" />" 
+        return '<img width=100px src=' + this.apiUrl + el.img + '/>';
       }
     }
   ];
@@ -70,12 +67,32 @@ export class ProductosIndexComponent implements OnInit {
       label: 'Eliminar',
       icon: 'trash',
       action: (element: any, index: number) => {
-        /*  this.delete(element); */
+        this.delete(element);
       }
-    }
+    },
+    /* {
+      icon: "toggle-on",
+      label: "Activar",
+      action: (element: any) => {
+        this.cambiarEstado(element);
+      },
+      hide: (element: any, index: number) => {
+        return element.estado == -1;
+      }
+    },
+    {
+      icon: "toggle-off",
+      label: "Desactivar",
+      action: (element: any) => {
+        this.cambiarEstado(element);
+      },
+      hide: (element: any, index: number) => {
+        return element.estado == 1;
+      }
+    } */
   ];
   filtros: any[] = [
-     {
+    {
       label: 'Nombre',
       column: 'nombre',
       op: 'like'
@@ -92,14 +109,14 @@ export class ProductosIndexComponent implements OnInit {
     private modalService: NgbModal,
     private service: ProductosService,
     private loading: LoadingService,
-    private alerts: AlertService
+    private alert: SweetAlertComponent
   ) { }
   ngOnInit(): void {
 
   }
   agregar() {
     this.modalService.open(ProductosCreateComponent, { size: 'lg', scrollable: true, backdrop: 'static' }).result.then((result: any) => {
-      this.reloadEmitter.emit('true');
+      this.reloadEmitter.emit('reload');
     }, (reason: any) => { });
   }
   view(element: any) {
@@ -122,7 +139,7 @@ export class ProductosIndexComponent implements OnInit {
         this.loading.hide();
         let modalRef = this.modalService.open(ProductosUpdateComponent, { size: 'lg', scrollable: true, backdrop: 'static' });
         modalRef.componentInstance.element = res;
-        this.reloadEmitter.emit('true');
+        this.reloadEmitter.emit('reload');
       }, error: (err) => {
         this.loading.hide();
 
@@ -130,4 +147,61 @@ export class ProductosIndexComponent implements OnInit {
     });
   }
 
+  loadData(): void {
+    this.reloadEmitter.emit();
+  }
+  delete(element: any): void {
+    const modalRef = this.modalService.open(ModalDeleteComponent, { windowClass: 'clear-modal', size: 'md', scrollable: true, backdrop: 'static' });
+    modalRef.componentInstance.titulo = 'Eliminar Usuario';
+    modalRef.componentInstance.texto = '¿Seguro que desea eliminar este registro?';
+    modalRef.componentInstance.textoAceptar = 'Eliminar';
+    modalRef.result.then((result) => {
+      this.loading.show();
+      this.service.delete(element.id).subscribe({
+        next: (res: any) => {
+          this.loading.hide();
+          this.loadData();
+          this.alert.ToastAlert('success', 'top-end', 'Producto eliminado con éxito.', 1500);
+        },
+        error: (err: any) => {
+          console.error(err);
+          this.loading.hide();
+          this.alert.ToastAlert('error', 'top-end', 'No se ha podido eliminar el registro de producto..', 1500);
+
+        }
+      });
+    }, (reason) => { });
+  }
+  recargarDatos() {
+    // Emitir un evento para indicar que se deben recargar los datos
+    this.reloadEmitter.emit('reload');
+  }
+  cambiarEstado(element: any): void {
+    this.loading.show()
+    if (element.estado != 1) {
+      this.service.activate(element).subscribe({
+        next: (res: any) => {
+          this.loading.hide();
+          this.reloadEmitter.emit('true');
+        },
+        error: (err: any) => {
+          console.error(err);
+          this.loading.hide();
+          // this.alerts.addAlert("No se ha podido activar el registro.", "danger");
+        }
+      });
+    } else {
+      this.service.deactivate(element).subscribe({
+        next: (res: any) => {
+          this.loading.hide();
+          this.reloadEmitter.emit('true');
+        },
+        error: (err: any) => {
+          console.error(err);
+          this.loading.hide();
+          //this.alerts.addAlert("No se ha podido desactivar el registro.", "danger");
+        }
+      })
+    }
+  }
 }

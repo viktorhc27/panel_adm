@@ -13,6 +13,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select2Module } from 'ng-select2-component';
 import { CommonModule } from '@angular/common';
 import { LoadingService, AlertService } from 'ngx-kuv-tools';
+import { SweetAlertComponent } from '../../../utils/sweet-alert/sweet-alert.component';
 @Component({
   selector: 'app-productos-create',
   standalone: true,
@@ -26,7 +27,7 @@ import { LoadingService, AlertService } from 'ngx-kuv-tools';
     NgxKuvToolsModule,
     NgxKuvUtilsModule
   ],
-  providers: [CategoriasService, ProductosService],
+  providers: [CategoriasService, ProductosService,SweetAlertComponent],
   templateUrl: './productos-create.component.html',
   styleUrl: './productos-create.component.scss'
 })
@@ -45,12 +46,12 @@ export class ProductosCreateComponent implements OnInit {
     private router: Router,
     public activeModal: NgbActiveModal,
     private loading: LoadingService,
-    private alerts: AlertService
+    private alert: SweetAlertComponent
   ) {
     this.formGroup = this.fb.group({
       nombre: ['', [Validators.required]],
       precio: ['', [Validators.required]],
-      img: ['', [Validators.required]],
+      img: [''],
       categoria_id: ['', [Validators.required]],
     });
   }
@@ -66,21 +67,22 @@ export class ProductosCreateComponent implements OnInit {
           this.loading.hide();
           this.upload(res.id, this.selectedFile);
           this.activeModal.close(res.model);
-          this.alerts.addAlert("Producto registrado con éxito.", "success");
+          this.alert.ToastAlert('success', 'top-end', 'Producto registrado con éxito.', 1500);
         },
         error: (err: any) => {
           console.error(err);
           this.loading.hide();
-          this.alerts.addAlert("No se pudo guardar el registro del producto.", "danger");
+          this.alert.ToastAlert('error', 'top-end', 'No se pudo guardar el registro del producto.', 1500);
           console.log(err.error.response)
           if (err.error.response) {
-            this.alerts.addAlert(err.error.response, "danger");
+            this.alert.ToastAlert('error', 'top-end', err.error.response, 1500);
           }
         },
       });
     } else {
       this.formGroup.markAllAsTouched();
-      this.alerts.addAlert("Hay errores en el formulario.", "warning");
+      this.alert.ToastAlert('warning', 'top-end', 'Hay errores en el formulario.', 1500);
+      
     }
 
   }
@@ -104,18 +106,17 @@ export class ProductosCreateComponent implements OnInit {
   }
 
   upload(id: any, file: File) {
-    console.log(file);
     const formData = new FormData();
     formData.append('image', file);
     formData.append('idUser', id)
 
     this.ProductoService.uploadFile(formData).subscribe({
       next: (res: any) => {
-        console.log(res);
-        this.alerts.addAlert("Producto registrado con éxito.", "success");
+      //  this.alert.ToastAlert('success', 'top-end', 'Imagen registrada con éxito.', 1500);
       },
       error: (err: any) => {
         // Handle error
+       // this.alert.ToastAlert('error', 'top-end', err, 1500);
       },
     });
   }
@@ -129,7 +130,7 @@ export class ProductosCreateComponent implements OnInit {
         });
       }, error: (err: any) => {
         this.loading.hide();
-        if (err.response) this.alerts.addAlert(err.response, 'danger');
+        this.alert.ToastAlert('error', 'top-end', err.error.response, 1500);
       }
 
     });

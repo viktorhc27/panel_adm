@@ -34,6 +34,7 @@
     "ngx-echarts": "^17.1.0",
     "ngx-kuv-tools": "^1.0.2",
     "ngx-kuv-utils": "^1.0.9",
+    "ngx-pagination": "^6.0.3",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.10.1",
     "tslib": "^2.3.0",

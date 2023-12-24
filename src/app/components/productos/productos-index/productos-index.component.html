@@ -1,9 +1,9 @@
 <kuv-loading></kuv-loading>
 <kuv-alert></kuv-alert>
-<div class="p-2 p-md-5">
+<div class="p-md-4">
     <h3>Gestión de Productos</h3>
 
     <div class="btn btn-primary" (click)="agregar()" >Agregar Nuevo Producto</div>
 
-    <kuv-lazy-table [url]="apiUrl+ 'productos/index'" [columnas]="columnas" [acciones]="acciones" [filtros]="filtros" [reloadEmitter]="reloadEmitter"  ></kuv-lazy-table>
+    <kuv-lazy-table [url]="apiUrl+ 'productos/index'"  [columnas]="columnas" [acciones]="acciones" [filtros]="filtros" [reloadEmitter]="reloadEmitter"  ></kuv-lazy-table>
 </div>

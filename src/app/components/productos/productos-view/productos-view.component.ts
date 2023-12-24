@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Select2Module } from 'ng-select2-component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxKuvUtilsModule } from 'ngx-kuv-utils';
+import { environment } from '../../../../environments/environments';
 
 @Component({
   selector: 'app-productos-view',
@@ -26,6 +27,7 @@ import { NgxKuvUtilsModule } from 'ngx-kuv-utils';
   styleUrl: './productos-view.component.scss'
 })
 export class ProductosViewComponent implements OnInit {
+  apiUrl = environment.apiUrl;
   @Input() element: any = null
   formGroup: FormGroup = new FormGroup({});
   categorias: any[] = [];
