@@ -10,6 +10,7 @@ import { ProductosCreateComponent } from '../productos-create/productos-create.c
 import { NgSelect2Module } from 'ng-select2';
 import { ProductosViewComponent } from '../productos-view/productos-view.component';
 import { ProductosUpdateComponent } from '../productos-update/productos-update.component';
+import { environment } from '../../../../environments/environments';
 
 @Component({
   selector: 'app-productos-index',
@@ -20,6 +21,7 @@ import { ProductosUpdateComponent } from '../productos-update/productos-update.c
   providers: [ProductosService]
 })
 export class ProductosIndexComponent implements OnInit {
+  apiUrl = environment.apiUrl;
   dialogRef: any
 
   columnas: any[] = [

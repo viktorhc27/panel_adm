@@ -5,5 +5,5 @@
 
     <div class="btn btn-primary" (click)="agregar()" >Agregar Nuevo Producto</div>
 
-    <kuv-lazy-table [url]="'http://localhost:3000/api/' + 'productos/index'" [columnas]="columnas" [acciones]="acciones" [filtros]="filtros" [reloadEmitter]="reloadEmitter"  ></kuv-lazy-table>
+    <kuv-lazy-table [url]="apiUrl+ 'productos/index'" [columnas]="columnas" [acciones]="acciones" [filtros]="filtros" [reloadEmitter]="reloadEmitter"  ></kuv-lazy-table>
 </div>
