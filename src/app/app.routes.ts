@@ -1,9 +1,12 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'productos', loadComponent: () => import('./components/productos/productos-index/productos-index.component').then(m => m.ProductosIndexComponent) },
-    { path: 'productos/create', loadComponent: () => import('./components/productos/productos-create/productos-create.component').then(m => m.ProductosCreateComponent) },
-    { path: '**', redirectTo: 'home' }
+  { path: 'login', component: LoginComponent },
+  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'productos', loadChildren: () => import('./components/productos/productos.module').then(m => m.ProductosModule), canActivate: [authGuard] },
+  { path: 'categorias', loadChildren: () => import('./components/categorias/categorias.module').then(m => m.CategoriasModule), canActivate: [authGuard] },
+  { path: '**', redirectTo: 'home' }
 ];

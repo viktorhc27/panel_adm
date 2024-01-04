@@ -1,0 +1,9 @@
+<kuv-loading></kuv-loading>
+
+<div class="p-md-4">
+    <h3>Gestión de Categorias</h3>
+
+    <div class="btn btn-primary" (click)="agregar()" >Agregar Nuevo Categoria</div>
+
+    <kuv-lazy-table [url]="apiUrl+ 'categorias/index'"  [columnas]="columnas" [acciones]="acciones" [filtros]="filtros" [reloadEmitter]="reloadEmitter"  ></kuv-lazy-table>
+</div>

@@ -40,7 +40,7 @@ export class VentasMesesComponent implements OnInit {
 
     this.service.reporte_meses(this.formGroup.controls['fecha_inicio'].value, this.formGroup.controls['fecha_final'].value).subscribe({
       next: (res: any) => {
-        this.datos = res;
+        this.datos = res.reporteMeses;
         console.log(res);
       },
       error: (err: any) => {

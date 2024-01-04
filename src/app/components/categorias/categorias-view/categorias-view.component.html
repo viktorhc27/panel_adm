@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h4 class="modal-title">Ver Categoria</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="form">
+        <div class="row align-items-center">
+            <div class="col-12 p-3">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" formControlName="nombre"
+                    [ngClass]="{'is-invalid': form.controls['nombre'].errors && form.controls['nombre'].touched}">
+                <div class="invalid-feedback">
+                    Debe ingresar un valor en el campo.
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+   
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancelar</button>
+</div>

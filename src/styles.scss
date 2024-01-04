@@ -18,12 +18,30 @@ ngb-modal-backdrop {
   background-color: #343a40 !important;
   border-color: #000000 !important;
 }
+.texto{
+  color: #dee2e6;
 
+}
+.fondo{
+  background-color: #2c2c2c !important;
+  color: #dee2e6;
+}
 :root {
-  --kuv-table-bg-body-1: white;
-  --kuv-table-bg-head: #007bff;
+/*   rgb(16 12 42) */
+  --kt-cl:white;
+  --kt-hover-bg: #343a40;
+  --kuv-table-bg-body-1: #343a40;
+  --kuv-table-bg-head: #3f6791;
   --kuv-table-cl-head: white;
-  --kuv-table-bg-body-2: white;
+  --kuv-table-bg-body-2: #2c3136;
   --kuv-table-bg-foot:white;
+  --kuv-table-cl-body-1:white;
+  --kuv-table-cl-body-2:white;
+  --kuv-table-bg-foot: #2c3136;
+  --kt-body-bg:#343a40
+  --kt-body-b: #343a40
+  --kt-hover-bg:#343a40
+  --kt-body-cl:red
+  
   
 }

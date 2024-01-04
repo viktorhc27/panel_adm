@@ -123,7 +123,7 @@ export class ProductosCreateComponent implements OnInit {
 
   listar_categorias() {
 
-    this.service.index().subscribe({
+    this.service.list().subscribe({
       next: (res: any) => {
         res.forEach((e: any) => {
           this.categorias.push(e)

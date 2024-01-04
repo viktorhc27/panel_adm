@@ -15,4 +15,19 @@ export class CategoriasService {
   index(): Observable<any> {
     return this.http.get(this.apiUrl + this.controller + 'index');
   }
+  list(): Observable<any> {
+    return this.http.get(this.apiUrl + this.controller + 'list');
+  }
+  save(categoria: any): Observable<any> {
+    return this.http.post(this.apiUrl + this.controller + 'save', { categoria });
+  }
+  delete(id: any): Observable<any> {
+    return this.http.delete(this.apiUrl + this.controller + "delete/" + id);
+  }
+  view(id: number): Observable<any> {
+    return this.http.get(this.apiUrl + this.controller + 'view/' + id,)
+  }
+  update(categoria: any): Observable<any> {
+    return this.http.put(this.apiUrl + this.controller + 'update/', {categoria})
+  }
 }

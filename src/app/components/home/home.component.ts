@@ -16,11 +16,12 @@ import { NgxKuvToolsModule } from 'ngx-kuv-tools';
 import { NgxKuvUtilsModule } from 'ngx-kuv-utils';
 import Swal from 'sweetalert2';
 import { SweetAlertComponent } from '../../utils/sweet-alert/sweet-alert.component';
+import echarts from 'echarts/types/dist/echarts';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  providers: [ProductosService, VentasService, provideEcharts(),SweetAlertComponent],
+  providers: [ProductosService, VentasService, provideEcharts(), SweetAlertComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   imports: [
@@ -33,10 +34,12 @@ import { SweetAlertComponent } from '../../utils/sweet-alert/sweet-alert.compone
     NgxPaginationModule,
     NgxKuvToolsModule,
     NgxKuvUtilsModule,
-    
+
   ]
 })
 export class HomeComponent implements OnInit {
+  
+ 
   page: number = 1;
   data: any
   tusDatos = new MatTableDataSource<any>();
@@ -45,11 +48,11 @@ export class HomeComponent implements OnInit {
   totalVentas: number = 0
   tipoBarra: string = "bar"//bar,pie,doughnut
   myChart: any
-  dataVenta : any[] = [];
+  dataVenta: any[] = [];
   dataSource: any
   chart: any = null
   fileUrl: any
-  
+
   constructor(
     private service: ProductosService,
     private el: ElementRef,
@@ -60,6 +63,7 @@ export class HomeComponent implements OnInit {
   ) {
 
   }
+
   tableItems: any[] = [];
   tableColumns: any[] = [
     {
@@ -80,7 +84,10 @@ export class HomeComponent implements OnInit {
     title: {
       text: 'Ventas',
       subtext: 'Por meses',
-      left: 'center'
+      left: 'center',
+      textStyle: {
+        color: '#FFFFFF',
+      }
     },
     tooltip: {
       trigger: 'item'
@@ -94,6 +101,7 @@ export class HomeComponent implements OnInit {
         name: 'Venta realizada',
         type: 'pie',
         radius: '60%',
+
         data: [] as ({ value: number; name: string; total: number }[] | undefined),
         emphasis: {
           itemStyle: {

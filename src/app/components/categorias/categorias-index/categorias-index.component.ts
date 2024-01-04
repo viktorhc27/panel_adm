@@ -1,27 +1,38 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { ProductosService } from '../productos.service';
+import { environment } from '../../../../environments/environments';
+import { CategoriasService } from '../categorias.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { LoadingService, NgxKuvToolsModule } from 'ngx-kuv-tools';
 import { NgxKuvUtilsModule } from 'ngx-kuv-utils';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProductosCreateComponent } from '../productos-create/productos-create.component';
 import { NgSelect2Module } from 'ng-select2';
-import { ProductosViewComponent } from '../productos-view/productos-view.component';
-import { ProductosUpdateComponent } from '../productos-update/productos-update.component';
-import { environment } from '../../../../environments/environments';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SweetAlertComponent } from '../../../utils/sweet-alert/sweet-alert.component';
+import { CategoriasViewComponent } from '../categorias-view/categorias-view.component';
+import { CategoriasUpdateComponent } from '../categorias-update/categorias-update.component';
 import { ModalDeleteComponent } from '../../../utils/modal-delete/modal-delete.component';
+import { CategoriasCreateComponent } from '../categorias-create/categorias-create.component';
 
 @Component({
-  selector: 'app-productos-index',
+  selector: 'app-categorias-index',
   standalone: true,
   imports: [CommonModule, HttpClientModule, NgxKuvToolsModule, NgxKuvUtilsModule, NgSelect2Module],
-  templateUrl: './productos-index.component.html',
-  styleUrl: './productos-index.component.scss',
-  providers: [ProductosService, SweetAlertComponent]
+  templateUrl: './categorias-index.component.html',
+  styleUrl: './categorias-index.component.scss',
+  providers: [CategoriasService,SweetAlertComponent]
 })
-export class ProductosIndexComponent implements OnInit {
+export class CategoriasIndexComponent implements OnInit {
+  constructor(
+    private service: CategoriasService,
+    private modalService: NgbModal,
+    private loading: LoadingService,
+    private alert: SweetAlertComponent) {
+
+  }
+  reloadEmitter: EventEmitter<string> = new EventEmitter();
+  ngOnInit(): void {
+
+  }
   apiUrl = environment.apiUrl;
   columnas: any[] = [
     {
@@ -29,23 +40,6 @@ export class ProductosIndexComponent implements OnInit {
       attribute: 'nombre',
       width: 1,
       responsive: ['XS', 'SM', 'MD']
-    },
-    {
-      label: "Categoría",
-      width: 1,
-      responsive: ['XS', 'SM', 'MD'],
-      value: (el: any) => {
-        return el.categoria?.nombre;
-      }
-    },
-    {
-      label: "Imagen",
-      styled: true,
-      width: 1,
-      responsive: ['SM', 'MD'],
-      value: (el: any) => {
-        return '<img width=100px src=' + this.apiUrl + el.img + '/>';
-      }
     }
   ];
   acciones: any[] = [
@@ -96,35 +90,17 @@ export class ProductosIndexComponent implements OnInit {
       label: 'Nombre',
       column: 'nombre',
       op: 'like'
-    }, {
-      label: 'Categoría',
-      column: '$categoria.nombre$',
-      op: 'like'
-    },
+    }
 
   ];
 
-  reloadEmitter: EventEmitter<string> = new EventEmitter();
-  constructor(
-    private modalService: NgbModal,
-    private service: ProductosService,
-    private loading: LoadingService,
-    private alert: SweetAlertComponent
-  ) { }
-  ngOnInit(): void {
 
-  }
-  agregar() {
-    this.modalService.open(ProductosCreateComponent, { size: 'lg', scrollable: true, backdrop: 'static' }).result.then((result: any) => {
-      this.reloadEmitter.emit('true');
-    }, (reason: any) => { });
-  }
   view(element: any) {
     this.loading.show()
     this.service.view(element.id).subscribe({
       next: (res) => {
         this.loading.hide();
-        let modalRef = this.modalService.open(ProductosViewComponent, { size: 'lg', scrollable: true, backdrop: 'static' });
+        let modalRef = this.modalService.open(CategoriasViewComponent, { size: 'sm', scrollable: true, backdrop: 'static' });
         modalRef.componentInstance.element = res;
       }, error: (err) => {
         this.loading.hide();
@@ -133,19 +109,29 @@ export class ProductosIndexComponent implements OnInit {
     });
   }
   update(element: any) {
-    this.loading.show()
+    this.loading.show();
+  
     this.service.view(element.id).subscribe({
       next: (res) => {
         this.loading.hide();
-        let modalRef = this.modalService.open(ProductosUpdateComponent, { size: 'lg', scrollable: true, backdrop: 'static' });
+        let modalRef = this.modalService.open(CategoriasUpdateComponent, { size: 'lg', scrollable: true, backdrop: 'static' });
         modalRef.componentInstance.element = res;
-        this.reloadEmitter.emit('reload');
-      }, error: (err) => {
+        modalRef.result.then(() => {
+          // Este código se ejecutará después de que se cierre el modal
+          this.loading.show();
+          this.reloadEmitter.emit('true');
+          this.loading.hide();
+        }).catch(() => {
+          // Manejar el caso en que el modal se cierre de manera inesperada o se cancele
+          this.loading.hide();
+        });
+      },
+      error: (err) => {
         this.loading.hide();
-
       }
     });
   }
+  
 
   loadData(): void {
     this.reloadEmitter.emit();
@@ -172,36 +158,10 @@ export class ProductosIndexComponent implements OnInit {
       });
     }, (reason) => { });
   }
-  recargarDatos() {
-    // Emitir un evento para indicar que se deben recargar los datos
-    this.reloadEmitter.emit('reload');
-  }
-  cambiarEstado(element: any): void {
-    this.loading.show()
-    if (element.estado != 1) {
-      this.service.activate(element).subscribe({
-        next: (res: any) => {
-          this.loading.hide();
-          this.reloadEmitter.emit('true');
-        },
-        error: (err: any) => {
-          console.error(err);
-          this.loading.hide();
-          // this.alerts.addAlert("No se ha podido activar el registro.", "danger");
-        }
-      });
-    } else {
-      this.service.deactivate(element).subscribe({
-        next: (res: any) => {
-          this.loading.hide();
-          this.reloadEmitter.emit('true');
-        },
-        error: (err: any) => {
-          console.error(err);
-          this.loading.hide();
-          //this.alerts.addAlert("No se ha podido desactivar el registro.", "danger");
-        }
-      })
-    }
+
+  agregar() {
+    this.modalService.open(CategoriasCreateComponent, { size: 'lg', scrollable: true, backdrop: 'static' }).result.then((result: any) => {
+      this.reloadEmitter.emit('true');
+    }, (reason: any) => { });
   }
 }
