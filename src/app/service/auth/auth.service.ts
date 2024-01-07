@@ -18,10 +18,16 @@ export class AuthService {
     return this.http.post(this.apiUrl + this.controller + 'login', { email, password });
   }
 
-  saveToken(token: string): void {
-    localStorage.setItem('token', token);
+  saveToken(datos: any): void {
+    localStorage.setItem('token', datos.token);
+    localStorage.setItem('nombre', datos.usuario.nombre);
+    localStorage.setItem('apellidos', datos.usuario.app + " " + datos.usuario.apm);
   }
-
+  cerrar_session(){
+    localStorage.removeItem('token')
+    localStorage.removeItem('nombre')
+    localStorage.removeItem('apelldios')
+  }
   getToken(): string | null {
     return localStorage.getItem('token');
   }

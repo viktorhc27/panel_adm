@@ -32,7 +32,8 @@ export class LoginComponent {
   login() {
     this.authService.login(this.form.controls['email'].value, this.form.controls['password'].value).subscribe({
       next: (res: any) => {
-        this.authService.saveToken(res.token);
+        console.log(res);
+        this.authService.saveToken(res);
         // Lógica adicional en caso de inicio de sesión exitoso
         console.log('Inicio de sesión exitoso');
         this.router.navigate(['/home']);

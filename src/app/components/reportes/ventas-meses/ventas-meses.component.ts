@@ -4,19 +4,40 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { Router } from '@angular/router';
 import { VentasService } from '../../ventas/ventas.service';
 import { HttpClientModule } from '@angular/common/http';
+import { EChartsOption } from 'echarts';
+import { NgxEchartsDirective, provideEcharts } from 'ngx-echarts';
 @Component({
   selector: 'app-ventas-meses',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxEchartsDirective
+
   ],
-  providers: [VentasService],
+  providers: [VentasService, provideEcharts()],
   templateUrl: './ventas-meses.component.html',
   styleUrl: './ventas-meses.component.scss'
 })
 export class VentasMesesComponent implements OnInit {
+  chartOption: EChartsOption = {
+    xAxis: {
+      type: 'category',
+      data: []
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        data: [],
+        type: 'bar'
+      }
+    ]
+  };
+
+
 
   formGroup: FormGroup;
   datos: Array<any> = [];
@@ -36,12 +57,22 @@ export class VentasMesesComponent implements OnInit {
   }
 
   reporte() {
-    console.log(this.formGroup.value);
-
     this.service.reporte_meses(this.formGroup.controls['fecha_inicio'].value, this.formGroup.controls['fecha_final'].value).subscribe({
       next: (res: any) => {
-        this.datos = res.reporteMeses;
         console.log(res);
+        this.datos = res.reporteMeses;
+
+        // Verificar si 'xAxis' existe y es del tipo correcto
+        if (this.chartOption.xAxis && 'data' in this.chartOption.xAxis) {
+          this.chartOption.xAxis.data = this.datos.map((item: any) => item.mes);
+        }
+
+        if (this.chartOption.series && Array.isArray(this.chartOption.series)) {
+          this.chartOption.series[0].data = this.datos.map((item: any) => item.total);
+        }
+
+
+        console.log(this.chartOption);
       },
       error: (err: any) => {
         console.error(err);
@@ -50,4 +81,5 @@ export class VentasMesesComponent implements OnInit {
 
 
   }
+
 }

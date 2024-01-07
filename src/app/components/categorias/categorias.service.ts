@@ -18,6 +18,9 @@ export class CategoriasService {
   list(): Observable<any> {
     return this.http.get(this.apiUrl + this.controller + 'list');
   }
+  count(): Observable<any> {
+    return this.http.get(this.apiUrl + this.controller + 'count');
+  }
   save(categoria: any): Observable<any> {
     return this.http.post(this.apiUrl + this.controller + 'save', { categoria });
   }

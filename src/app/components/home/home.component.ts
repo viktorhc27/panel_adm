@@ -17,11 +17,12 @@ import { NgxKuvUtilsModule } from 'ngx-kuv-utils';
 import Swal from 'sweetalert2';
 import { SweetAlertComponent } from '../../utils/sweet-alert/sweet-alert.component';
 import echarts from 'echarts/types/dist/echarts';
+import { CategoriasService } from '../categorias/categorias.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  providers: [ProductosService, VentasService, provideEcharts(), SweetAlertComponent],
+  providers: [ProductosService, VentasService, provideEcharts(), SweetAlertComponent, CategoriasService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   imports: [
@@ -38,8 +39,8 @@ import echarts from 'echarts/types/dist/echarts';
   ]
 })
 export class HomeComponent implements OnInit {
-  
- 
+
+
   page: number = 1;
   data: any
   tusDatos = new MatTableDataSource<any>();
@@ -52,6 +53,7 @@ export class HomeComponent implements OnInit {
   dataSource: any
   chart: any = null
   fileUrl: any
+  count_categories: number | undefined
 
   constructor(
     private service: ProductosService,
@@ -59,7 +61,8 @@ export class HomeComponent implements OnInit {
     private VentasService: VentasService,
     private sanitizer: DomSanitizer,
     public formatter: FormatterService,
-    private alert: SweetAlertComponent
+    private alert: SweetAlertComponent,
+    private categoryService: CategoriasService
   ) {
 
   }
@@ -119,13 +122,14 @@ export class HomeComponent implements OnInit {
     this.total_Ventas()
     this.masVendido()
     this.grafico_ventas()
+    this.count()
 
   }
   list_count() {
     this.service.list_count().subscribe({
       next: (res: any) => {
         this.total = res.count;
-        this.alert.ToastAlert('success', 'top-end', 'ventas cargadas', 1500);
+        //this.alert.ToastAlert('success', 'top-end', 'ventas cargadas', 1500);
 
       }, error: (err: any) => {
 
@@ -176,8 +180,6 @@ export class HomeComponent implements OnInit {
   masVendido() {
     this.VentasService.productosMasVendidos().subscribe({
       next: (res: any) => {
-        console.log(res);
-
         this.dataVenta = res
         for (let i = 0; i < res.length; i++) {
           if (!res[i].totalVendido) {
@@ -188,7 +190,18 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+  count() {
+    this.categoryService.count().subscribe({
+      next: (res: any) => {
+        console.log(res);
+        
+        this.count_categories= res
 
+      }, error: (err: any) => {
+
+      }
+    });
+  }
   exportToExcel() {
     this.service.excel().subscribe(
       (archivo: Blob) => {

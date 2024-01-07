@@ -1,6 +1,7 @@
 <!-- app.component.html -->
-<div class="dark-mode wrapper ">
-  <ng-container *ngIf="!isLoginPage()">
+<ng-container *ngIf="!isLoginPage()">
+  <div class="dark-mode wrapper ">
+
     <!-- Navbar -->
     <nav class="dark-mode navbar navbar-expand navbar-white navbar-dark">
       <!-- Navbar content -->
@@ -13,30 +14,23 @@
       </ul>
 
       <ul class="navbar-nav ml-auto">
-
-        <li class="nav-item">
-          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-            <i class="fas fa-search"></i>
+        <li class="nav-item"> 
+          <a class="nav-link " data-widget="navbar-search" href="#" role="button">
+            <!-- <span class="text-uppercase text-light">{{nombre_completo}}</span> -->
+           
           </a>
-          <div class="navbar-search-block">
-            <form class="form-inline">
-              <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                  <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
+      
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link"  data-widget="navbar-search" href="#" role="button">
+            <i class="fa-solid fa-right-to-bracket"></i>
+          </a>
+      
         </li>
 
 
       </ul>
+
     </nav>
 
     <!-- Main Sidebar Container -->
@@ -104,11 +98,10 @@
     <footer class="main-footer">
       <!-- Footer content -->
     </footer>
+  </div>
+</ng-container>
 
-  </ng-container>
-
-  <!-- Si estás en la página de login, solo mostrar el contenido del login -->
-  <ng-container *ngIf="isLoginPage()">
-    <router-outlet></router-outlet>
-  </ng-container>
-</div>
+<!-- Si estás en la página de login, solo mostrar el contenido del login -->
+<ng-container *ngIf="isLoginPage()">
+  <router-outlet></router-outlet>
+</ng-container>
